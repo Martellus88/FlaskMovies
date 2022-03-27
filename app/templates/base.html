@@ -30,6 +30,7 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">Home Page</a>
           </li>
+          {% if current_user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link active" href="#">Profile</a>
           </li>
@@ -44,6 +45,12 @@
                 <hr class="dropdown-divider">
               </li>
               <li><a class="dropdown-item" href="#">Log Out</a></li>
+            {% else %}
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+                <li><a class="nav-link active" href="#">Log In</a></li>
+            {% endif %}
             </ul>
           </li>
         </ul>

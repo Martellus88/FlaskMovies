@@ -16,6 +16,9 @@ class User(UserMixin, db.Model):
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.utcnow())
 
+    def __repr__(self):
+        return f'<User> {self.id=}:{self.username=}:{self.email=}'
+
     @property
     def password(self):
         raise AttributeError('Password is not a readable attribute.')
@@ -28,6 +31,6 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
 
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return User.query.get(user_id)
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
