@@ -12,6 +12,7 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     FLASK_MOVIE_SUBJECT = ['FlaskMovies']
     FLASK_MOVIE_ADMIN = os.environ.get('FLASK_MOVIE_ADMIN')
+    FLASK_MOVIE_SENDER = os.environ.get('FLASK_MOVIE_SENDER')
 
 
 class DevelopmentConfig(Config):
