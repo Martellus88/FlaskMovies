@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block title %}Flask Movies - Registration{% endblock %}
+
+{% block page_content %}
+<h1>Registration</h1>
+<br>
+<div class="col-md-4">
+    {{ render_form(form) }}
+</div>
+{% endblock %}
