@@ -8,15 +8,18 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
         {{ bootstrap.load_css() }}
 
-        {% block title %}Flask Movies{% endblock %}
+
+        <title>{% block title %}Flask Movies{% endblock %}</title>
+
 
         {% endblock %}
     </head>
     <body>
-        {% block navbar %} {% endblock %}
+        {% block navbar %}
+        <header>
           <nav class="navbar navbar-light bg-light fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Flask Movies</a>
+    <a class="navbar-brand" href="{{ url_for('main.index') }}">Flask Movies</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -28,7 +31,7 @@
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home Page</a>
+            <a class="nav-link active" aria-current="page" href="{{ url_for('main.index') }}">Home Page</a>
           </li>
           {% if current_user.is_authenticated %}
           <li class="nav-item">
@@ -44,12 +47,12 @@
               <li>
                 <hr class="dropdown-divider">
               </li>
-              <li><a class="dropdown-item" href="#">Log Out</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Log Out</a></li>
             {% else %}
               <li>
                 <hr class="dropdown-divider">
               </li>
-                <li><a class="nav-link active" href="#">Log In</a></li>
+                <li><a class="nav-link active" href="{{ url_for('auth.login') }}">Log In</a></li>
             {% endif %}
             </ul>
           </li>
@@ -58,7 +61,21 @@
     </div>
   </div>
 </nav>
-        {% block content %}{% endblock %}
+</header>
+        {% endblock %}
+
+{% block content %}
+<div class="container p">
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-primary" role="alert">
+        <button type="button" class="btn-close" aria-label="Close"></button>
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block page_content %}{% endblock %}
+</div>
+{% endblock %}
 
         {% block scripts %}
             {{ bootstrap.load_js() }}

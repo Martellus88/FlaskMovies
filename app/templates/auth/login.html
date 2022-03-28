@@ -1,10 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
 
-</body>
-</html>
+{% block title %}Flask Movies - Login{% endblock %}
+
+{% block page_content %}
+<h1>Login</h1>
+<br>
+<div class="col-md-4">
+{{ render_form(form) }}
+</div>
+{% endblock %}
