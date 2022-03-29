@@ -6,13 +6,14 @@ from ..models import User
 
 
 class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Length(1,64), Email()])
+    email = StringField('Email', validators=[DataRequired(), Length(1, 64), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Keep me logged in')
     submit = SubmitField('Submit')
 
+
 class RegisterForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Length(1,64), Email()])
+    email = StringField('Email', validators=[DataRequired(), Length(1, 64), Email()])
     password = PasswordField('Password', validators=[
         DataRequired(), EqualTo('password2', message='Password must match.')])
     password2 = PasswordField('Confirm password', validators=[DataRequired()])
@@ -28,3 +29,11 @@ class RegisterForm(FlaskForm):
     def validate_username(self, field):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError('Username already in use.')
+
+
+class ChangePasswordForm(FlaskForm):
+    old_password = PasswordField('Old password', validators=[DataRequired()])
+    password = PasswordField('New password', validators=[
+        DataRequired(), EqualTo('password2', message='Password must match')])
+    password2 = PasswordField('Confirm new password', validators=[DataRequired()])
+    submit = SubmitField('Update password')

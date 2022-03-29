@@ -35,8 +35,8 @@ class User(UserMixin, db.Model):
     def generate_confirmation_token(self, expiration=3600):
         expiration_time = datetime.datetime.utcnow() + datetime.timedelta(seconds=expiration)
         return jwt.encode({'confirm': self.id, 'exp': expiration_time},
-                         current_app.config['SECRET_KEY'],
-                         algorithm='HS256')
+                          current_app.config['SECRET_KEY'],
+                          algorithm='HS256')
 
     def confirm_register_token(self, token):
         try:
@@ -48,6 +48,7 @@ class User(UserMixin, db.Model):
         self.confirmed = True
         db.session.add(self)
         return True
+
 
 @login_manager.user_loader
 def load_user(user_id):

@@ -3,7 +3,7 @@ from flask_login import login_user, login_required, current_user, logout_user
 from . import auth
 from .. import db
 from ..models import User
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, ChangePasswordForm
 from ..email import send_email
 
 
@@ -45,6 +45,7 @@ def register():
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
 
+
 @auth.route('/confirm/<token>')
 @login_required
 def confirm(token):
@@ -57,6 +58,7 @@ def confirm(token):
         flash('The confirmation link is invalid or has expired.')
     return redirect(url_for('main.index'))
 
+
 @auth.route('/confirm')
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
@@ -65,6 +67,7 @@ def resend_confirmation():
     flash('A new confirmation email has been sent to you by email.')
     return redirect(url_for('main.index'))
 
+
 @auth.before_app_request
 def before_request():
     if current_user.is_authenticated \
@@ -72,8 +75,25 @@ def before_request():
             and request.blueprint != 'auth':
         return redirect(url_for('auth.unconfirmed'))
 
+
 @auth.route('/unconfirmed')
 def unconfirmed():
     if current_user.is_anonymous or current_user.confirmed:
         return redirect(url_for('main.index'))
     return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/change_password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.old_password.data):
+            current_user.password = form.password.data
+            db.session.add(current_user)
+            db.session.commit()
+            flash('Your password has been update.')
+            return redirect(url_for('main.index'))
+        else:
+            flash('Invalid password')
+    return render_template('auth/change-password.html', form=form)
