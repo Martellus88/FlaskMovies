@@ -3,7 +3,7 @@ from flask_login import login_user, login_required, current_user, logout_user
 from . import auth
 from .. import db
 from ..models import User
-from .forms import LoginForm, RegisterForm, ChangePasswordForm
+from .forms import LoginForm, RegisterForm, ChangePasswordForm, ChangeMailForm
 from ..email import send_email
 
 
@@ -97,3 +97,31 @@ def change_password():
         else:
             flash('Invalid password')
     return render_template('auth/change-password.html', form=form)
+
+@auth.route('/change_mail', methods=['GET', 'POST'])
+@login_required
+def change_mail_request():
+    form = ChangeMailForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.password.data):
+            new_email = form.email.data.lower()
+            token = current_user.generate_mail_change_token(new_email)
+            send_email(new_email, 'Confirm your email address',
+                       'auth/email/change_email',
+                       user=current_user, token=token)
+            flash('An email with instructions to confirm your new email '
+                  'address has been sent to you.')
+            return redirect(url_for('main.index'))
+        else:
+            flash('Invalid email or password')
+    return render_template('auth/change-mail.html', form=form)
+
+@auth.route('/change_mail/<token>')
+@login_required
+def change_mail(token):
+    if current_user.change_email(token):
+        db.session.commit()
+        flash('Your email address has been updated.')
+    else:
+        flash('Invalid token')
+    return redirect(url_for('main.index'))

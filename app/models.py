@@ -49,6 +49,25 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
+    def generate_mail_change_token(self, new_email, expiration=3600):
+        expiration_time = datetime.datetime.utcnow() + datetime.timedelta(seconds=expiration)
+        return jwt.encode({'change_email': self.id, 'new_email': new_email, 'exp': expiration_time},
+                          current_app.config['SECRET_KEY'],
+                          algorithm='HS256')
+
+    def change_email(self, token):
+        try:
+            data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+        except jwt.InvalidTokenError:
+            return False
+        if data['change_email'] != self.id:
+            return False
+        new_email = data.get('new_email')
+        if new_email is None:
+            return False
+        self.email = new_email
+        db.session.add(self)
+        return True
 
 @login_manager.user_loader
 def load_user(user_id):
