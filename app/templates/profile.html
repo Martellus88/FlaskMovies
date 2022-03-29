@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Flask Movies - {{ user.username }}{% endblock %}
+
+{% block page_content %}
+<h1>{{ user.username }}</h1>
+{% if user.name or user.location %}
+<p>
+  {% if user.name %}{{user.name}}{% endif %}
+  {% if user.location %}
+      from <a href="http://maps.google.com/?q={{ user.location }}">{{ user.location }}</a><br>
+  {% endif %}
+</p>
+{% endif %}
+
+{% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+
+<p>
+    Member since - {{ user.member_since.strftime("%d/%m/%y") }}
+</p>
+{% endblock %}
