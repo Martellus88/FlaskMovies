@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, redirect, request
-from flask_login import login_user, login_required, current_user
+from flask_login import login_user, login_required, current_user, logout_user
 from . import auth
 from .. import db
 from ..models import User
@@ -25,7 +25,7 @@ def login():
 @auth.route('/logout')
 @login_required
 def logout():
-    login_user()
+    logout_user()
     flash('You have been logged out.')
     return redirect(url_for('main.index'))
 
@@ -40,8 +40,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         token = user.generate_confirmation_token()
-        send_email(user.email, 'Confirm your Account',
-                   'auth/email/confirm', user=user, token=token)
+        send_email(user.email, 'Confirm your Account', 'auth/email/confirm', user=user, token=token)
         flash('A confirmation email has been sent to you by email.')
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)
@@ -58,19 +57,6 @@ def confirm(token):
         flash('The confirmation link is invalid or has expired.')
     return redirect(url_for('main.index'))
 
-@auth.before_app_request
-def before_request():
-    if current_user.is_authenticated \
-            and not current_user.confirmed \
-            and request.blueprint != 'auth':
-        return render_template(url_for('auth.unconfirmed'))
-
-@auth.route('/unconfirmed')
-def unconfirmed():
-    if current_user.is_anonumos or current_user.confirmed:
-        return redirect(url_for('main.index'))
-    return render_template('auth/unconfirmed.html')
-
 @auth.route('/confirm')
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
@@ -78,3 +64,16 @@ def resend_confirmation():
                'auth/email/confirm', user=current_user, token=token)
     flash('A new confirmation email has been sent to you by email.')
     return redirect(url_for('main.index'))
+
+@auth.before_app_request
+def before_request():
+    if current_user.is_authenticated \
+            and not current_user.confirmed \
+            and request.blueprint != 'auth':
+        return redirect(url_for('auth.unconfirmed'))
+
+@auth.route('/unconfirmed')
+def unconfirmed():
+    if current_user.is_anonymous or current_user.confirmed:
+        return redirect(url_for('main.index'))
+    return render_template('auth/unconfirmed.html')

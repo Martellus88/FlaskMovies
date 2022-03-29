@@ -3,7 +3,8 @@
 {% block title %}Flask Movies - Confirm your account{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
+<div>
+    <div class="mx-auto mt-5 pt-5" style="width: 60%;">
     <h1>
         Hello, {{ current_user.username }}!
     </h1>
@@ -16,5 +17,6 @@
         Need another confirmation email?
         <a href="{{ url_for('auth.resend_confirmation') }}">Click here</a>
     </p>
+    </div>
 </div>
 {% endblock %}
