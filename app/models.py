@@ -69,6 +69,25 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
+    def generate_reset_password_token(self, expiration=3600):
+        expiration_time = datetime.datetime.utcnow() + datetime.timedelta(seconds=expiration)
+        return jwt.encode({'reset_password': self.id, 'exp': expiration_time},
+                          current_app.config['SECRET_KEY'],
+                          algorithm='HS256')
+
+    def reset_password(token, new_password):
+        try:
+            data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
+        except jwt.InvalidTokenError:
+            return False
+        user = User.query.get(data.get('reset_password'))
+        if user is None:
+            return False
+        user.password = new_password
+        db.session.add(user)
+        return True
+
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
