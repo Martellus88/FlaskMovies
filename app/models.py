@@ -73,8 +73,9 @@ class User(UserMixin, db.Model):
         expiration_time = datetime.datetime.utcnow() + datetime.timedelta(seconds=expiration)
         return jwt.encode({'reset_password': self.id, 'exp': expiration_time},
                           current_app.config['SECRET_KEY'],
-                          algorithm='HS256')
 
+                          algorithm='HS256')
+    @staticmethod
     def reset_password(token, new_password):
         try:
             data = jwt.decode(token, current_app.config['SECRET_KEY'], algorithms=['HS256'])
