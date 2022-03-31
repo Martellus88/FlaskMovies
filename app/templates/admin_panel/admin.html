@@ -4,31 +4,31 @@
 
 {% block page_content %}
 <table class="table table-hover">
-  <thead>
+    <thead>
     <tr>
-      <th scope="col">Action</th>
-      <th scope="col">id</th>
-      <th scope="col">Email</th>
-      <th scope="col">Name</th>
-      <th scope="col">Location</th>
-      <th scope="col">About me</th>
+        <th scope="col">Action</th>
+        <th scope="col">id</th>
+        <th scope="col">Email</th>
+        <th scope="col">Name</th>
+        <th scope="col">Location</th>
+        <th scope="col">About me</th>
     </tr>
-  </thead>
-  <tbody>
-  {% for user in users %}
+    </thead>
+    <tbody>
+    {% for user in users %}
     <tr>
-      <th>
-        <a href="{{ url_for('admin.edit_user_profile', id=user.id) }}">✏</a>
-        <a onclick="return confirmMsg(this);" href="{{ url_for('admin.delete_user_profile', id=user.id) }}">❌</a>
-      </th>
-      <th>{{ user.id }}</th>
-      <td>{{ user.email }}</td>
-      <td>{{ user.name }}</td>
-      <td>{{ user.location }}</td>
-      <td>{{ user.about_me }}</td>
+        <th>
+            <a href="{{ url_for('admin.edit_user_profile', id=user.id) }}">✏</a>
+            <a onclick="return confirmMsg(this);" href="{{ url_for('admin.delete_user_profile', id=user.id) }}">❌</a>
+        </th>
+        <th>{{ user.id }}</th>
+        <td>{{ user.email }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.location }}</td>
+        <td>{{ user.about_me }}</td>
     </tr>
-  {% endfor %}
-  </tbody>
+    {% endfor %}
+    </tbody>
 </table>
 {% endblock %}
 
@@ -39,6 +39,7 @@
 function confirmMsg(node) {
     return confirm("Are you sure you want to delete the user? Click OK to continue.");
 }
+
 </script>
 
 {% endblock %}

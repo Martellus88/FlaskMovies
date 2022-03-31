@@ -1,7 +1,17 @@
 {% extends "base.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
 
 {% block title %}Flask Movies{% endblock %}
 
 {% block page_content %}
-<h1>Hello</h1>
+
+
+<div>
+    {% if current_user.is_authenticated %}
+    <h1 class="text-center p-4">Add new film or series in collection.</h1>
+    <div class="form-control-lg w-75 center-container">
+        {{ render_form(form) }}
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

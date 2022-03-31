@@ -75,6 +75,7 @@ class User(UserMixin, db.Model):
                           current_app.config['SECRET_KEY'],
 
                           algorithm='HS256')
+
     @staticmethod
     def reset_password(token, new_password):
         try:

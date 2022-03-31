@@ -3,7 +3,7 @@ from .. import db
 from ..models import User
 from .forms import EditProfileAdmin
 from . import admin
-from ..decorators import admin_required
+from ..utils import admin_required
 
 
 @admin.route('/')

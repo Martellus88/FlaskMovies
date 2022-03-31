@@ -3,9 +3,11 @@ from flask import current_app, render_template
 from flask_mail import Message
 from . import mail
 
+
 def send_threading_email(app, msg):
     with app.app_context():
         mail.send(msg)
+
 
 def send_email(to, subject, template, **kwargs):
     app = current_app._get_current_object()

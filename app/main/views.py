@@ -2,13 +2,20 @@ from flask import render_template, flash, redirect, url_for
 from flask_login import current_user, login_required
 from . import main
 from ..models import User
-from .forms import EditProfileForm
+from .forms import EditProfileForm, AddURLCinemaForm
 from .. import db
+from ..utils import get_response
 
 
-@main.route('/')
+@main.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    form = AddURLCinemaForm()
+    if form.validate_on_submit():
+        print(get_response(form.url.data))
+        flash('Movie added successfully')
+        return redirect(url_for('main.index'))
+
+    return render_template('index.html', form=form)
 
 
 @main.route('/profile/<username>')
