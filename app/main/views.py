@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, url_for
-from flask_login import current_user
+from flask_login import current_user, login_required
 from . import main
 from ..models import User
 from .forms import EditProfileForm
@@ -18,6 +18,7 @@ def profile_username(username):
 
 
 @main.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
 def edit_profile():
     form = EditProfileForm()
     if form.validate_on_submit():

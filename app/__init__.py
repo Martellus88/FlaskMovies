@@ -29,4 +29,9 @@ def create_app(config_name):
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    from .admin import admin as admin_panel_blueprint
+    app.register_blueprint(admin_panel_blueprint)
+
+
+
     return app

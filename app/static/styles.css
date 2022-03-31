@@ -1,3 +1,7 @@
 .p {
 padding: 5rem;
 }
+
+.table a{
+text-decoration: none;
+}
