@@ -5,6 +5,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from . import db, login_manager
 
+user_movies = db.Table('user_movies',
+                       db.Column('user_id', db.Integer, db.ForeignKey('users.id')),
+                       db.Column('movie_id', db.Integer, db.ForeignKey('movies.id'))
+                       )
+
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -17,6 +22,11 @@ class User(UserMixin, db.Model):
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.datetime.utcnow())
+
+    movies = db.relationship('Movies',
+                             secondary=user_movies,
+                             backref='users',
+                             lazy='dynamic')
 
     def __repr__(self):
         return f'<User> {self.id=}:{self.username=}:{self.email=}'
@@ -88,6 +98,24 @@ class User(UserMixin, db.Model):
         user.password = new_password
         db.session.add(user)
         return True
+
+    def movie_already_added(self, movie_url):
+        return self.movies.filter_by(url=movie_url).first() is not None
+
+    def add_movie(self, movie):
+        self.movies.append(movie)
+
+
+class Movies(db.Model):
+    __tablename__ = 'movies'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(64))
+    year = db.Column(db.Integer)
+    description = db.Column(db.Text())
+    runtime = db.Column(db.Integer)
+    poster = db.Column(db.String())
+    type = db.Column(db.String(64))
+    url = db.Column(db.String(), index=True)  # unique = True ?
 
 
 @login_manager.user_loader

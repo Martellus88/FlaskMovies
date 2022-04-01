@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for
 from flask_login import current_user, login_required
 from . import main
-from ..models import User
+from ..models import User, Movies
 from .forms import EditProfileForm, AddURLCinemaForm
 from .. import db
 from ..utils import get_response
@@ -11,7 +11,21 @@ from ..utils import get_response
 def index():
     form = AddURLCinemaForm()
     if form.validate_on_submit():
-        print(get_response(form.url.data))
+        if current_user.movie_already_added(form.url.data):
+            flash('The movie has already been added to your collection.')
+            return redirect(url_for('main.index'))
+
+        title, year, type_, description, runtime, poster = \
+            get_response(form.url.data)
+        movie = Movies(title=title,
+                       year=year,
+                       type=type_,
+                       description=description,
+                       runtime=runtime,
+                       poster=poster,
+                       url=form.url.data)
+        current_user.add_movie(movie)
+        db.session.commit()
         flash('Movie added successfully')
         return redirect(url_for('main.index'))
 
