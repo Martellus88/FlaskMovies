@@ -14,6 +14,8 @@ class Config:
     FLASK_MOVIE_ADMIN = os.environ.get('FLASK_MOVIE_ADMIN')
     FLASK_MOVIE_SENDER = 'Flask Movies'
 
+    MOVIES_PER_PAGE = 15
+
 
 class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \

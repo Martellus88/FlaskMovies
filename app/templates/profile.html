@@ -20,6 +20,9 @@
 </p>
 
 <p>
-    <b><a class="link" href="{{ url_for('main.movie_collection', username=user.username) }}">Movie collection</a></b>
+    <b><a class="link" href="{{ url_for('.movie_collection', username=user.username) }}">Movie collection</a></b>
+</p>
+<p>
+    <b><a class="link" href="{{ url_for('.series_collection', username=user.username) }}">Series collection</a></b>
 </p>
 {% endblock %}

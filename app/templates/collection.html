@@ -5,11 +5,10 @@
 
 {% block page_content %}
 
-<h1 class="center_h pb-5">Movie collection</h1>
+<h1 class="center_h pb-5">{{h1.title()}} collection</h1>
 
 <div class="row row-cols-1 row-cols-md-5 g-4">
     {% for movie in movies %}
-
     <div class="col">
         <div class="card h-100">
             <img src="{{ movie.poster }}" class="card-img-top ss">
@@ -20,7 +19,6 @@
             </div>
         </div>
     </div>
-
     {% endfor %}
 </div>
 
@@ -33,15 +31,17 @@
         </li>
         {% for page in pagination.iter_pages() %}
         {% if page %}
-            {% if page == pagination.page %}
+        {% if page == pagination.page %}
         <li class="page-item active">
-            <a class="page-link" href="{{ url_for('.movie_collection', page=page, username=user.username) }}">{{page}}</a>
+            <a class="page-link"
+               href="{{ url_for('.movie_collection', page=page, username=user.username) }}">{{page}}</a>
         </li>
-            {% else %}
+        {% else %}
         <li class="page-item" aria-current="page">
-            <a class="page-link" href="{{ url_for('.movie_collection', page=page, username=user.username) }}">{{page}}</a>
+            <a class="page-link"
+               href="{{ url_for('.movie_collection', page=page, username=user.username) }}">{{page}}</a>
         </li>
-            {% endif %}
+        {% endif %}
         {% else %}
         <li class="page-item disabled"><a class="page-link" href="#">&hellip;</a></li>
         {% endif %}

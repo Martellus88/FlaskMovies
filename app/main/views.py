@@ -1,10 +1,19 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, current_app
 from flask_login import current_user, login_required
 from . import main
 from ..models import User, Movies
 from .forms import EditProfileForm, AddURLCinemaForm
 from .. import db
 from ..utils import get_response
+
+
+def get_collection_video(username, type_video):
+    user = User.query.filter_by(username=username).first_or_404()
+    page = request.args.get('page', 1, type=int)
+    pagination = user.movies.filter_by(type=type_video).paginate(
+        page, per_page=current_app.config['MOVIES_PER_PAGE'], error_out=False)
+    movies = pagination.items
+    return render_template('collection.html', movies=movies, user=user, pagination=pagination, h1=type_video)
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -64,12 +73,13 @@ def edit_profile():
 @main.route('/movie_collection/<username>')
 @login_required
 def movie_collection(username):
-    user = User.query.filter_by(username=username).first_or_404()
-    page = request.args.get('page', 1, type=int)
-    pagination = user.movies.order_by(Movies.type.desc()).paginate(
-        page, per_page=10, error_out=False)
-    movies = pagination.items
-    return render_template('movie_collection.html', movies=movies, user=user, pagination=pagination)
+    return get_collection_video(username, 'movie')
+
+
+@main.route('/series_collection/<username>')
+@login_required
+def series_collection(username):
+    return get_collection_video(username, 'series')
 
 
 @main.route('/movie/<int:id>')
