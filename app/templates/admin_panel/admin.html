@@ -31,15 +31,3 @@
     </tbody>
 </table>
 {% endblock %}
-
-{% block scripts %}
-{{ super() }}
-
-<script type="text/javascript">
-function confirmMsg(node) {
-    return confirm("Are you sure you want to delete the user? Click OK to continue.");
-}
-
-</script>
-
-{% endblock %}

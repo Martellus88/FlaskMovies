@@ -39,11 +39,17 @@ def imdb_api(cinema_id):
     }
 
     response = requests.request("GET", url, headers=headers, params=querystring)
+
+    try:
+        response.raise_for_status()
+    except requests.HTTPError as e:
+        print(e)
+
     json_response = json.loads(response.text)
 
     title = json_response['title']
     year = json_response['year']
-    type = json_response['type']
+    type = json_response['type'] if json_response['type'] == 'movie' else 'series'
     description = json_response['description']
     runtime = json_response['runtime']
     poster = json_response['poster']
@@ -60,11 +66,17 @@ def kinopoisk_api(cinema_id):
     }
 
     response = requests.request("GET", url, headers=headers)
+
+    try:
+        response.raise_for_status()
+    except requests.HTTPError as e:
+        print(e)
+
     json_response = json.loads(response.text)
 
     title = json_response['nameRu']
     year = json_response['year']
-    type = json_response['type']
+    type = 'movie' if json_response['type'] == 'FILM' else 'series'
     description = json_response['description']
     runtime = json_response['filmLength']
     poster = json_response['posterUrl']

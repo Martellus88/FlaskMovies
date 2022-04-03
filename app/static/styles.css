@@ -1,9 +1,28 @@
-.p {
-padding: 5rem;
+body { padding: 0 calc(20px - (100vw - 100%)) 0 0; }
+
+body a {
+   text-decoration: none;
 }
 
-.table a{
-text-decoration: none;
+.ss {
+height: 350px;
+}
+
+div .images {
+width: 39%;
+}
+
+@media (max-width: 1199.98px) { .ss {height: 250px;} div .images {width: 40%;}}
+
+@media (max-width: 991.98px) { .ss {height: 180px;} div .images {width: 40%;}}
+
+@media (max-width: 767.98px) { .ss {height: 100%;} div .images {width: 500px;}}
+
+@media (max-width: 575.98px) { .ss {height: 100%;} div .images {width: 470px;}}
+
+
+.p {
+padding: 5rem;
 }
 
 .center-container {
@@ -14,3 +33,16 @@ text-decoration: none;
 input::placeholder {
      text-align: center;
 }
+
+.link {
+color:	#696364;
+}
+
+.link:hover{
+color:#78424e;
+}
+
+.center_h {
+    text-align: center;
+}
+

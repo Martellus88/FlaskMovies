@@ -15,16 +15,23 @@ def index():
             flash('The movie has already been added to your collection.')
             return redirect(url_for('main.index'))
 
-        title, year, type_, description, runtime, poster = \
-            get_response(form.url.data)
-        movie = Movies(title=title,
-                       year=year,
-                       type=type_,
-                       description=description,
-                       runtime=runtime,
-                       poster=poster,
-                       url=form.url.data)
-        current_user.add_movie(movie)
+        #! TODO
+        movie = Movies.query.filter_by(url=form.url.data).first()
+        if movie is not None:
+            current_user.add_movie(movie)
+        else:
+
+            title, year, type_, description, runtime, poster = \
+                get_response(form.url.data)
+            movie = Movies(title=title,
+                           year=year,
+                           type=type_,
+                           description=description,
+                           runtime=runtime,
+                           poster=poster,
+                           url=form.url.data)
+            current_user.add_movie(movie)
+
         db.session.commit()
         flash('Movie added successfully')
         return redirect(url_for('main.index'))
@@ -54,3 +61,27 @@ def edit_profile():
     form.location.data = current_user.location
     form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', form=form)
+
+
+@main.route('/movie_collection/<username>')
+@login_required
+def movie_collection(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    movies = user.movies.order_by(Movies.type.desc()).all()
+    return render_template('movie_collection.html', movies=movies, user=user)
+
+@main.route('/movie/<int:id>')
+@login_required
+def movie(id):
+    movie = Movies.query.get_or_404(id)
+    return render_template('movie.html', movie=movie)
+
+@main.route('/delete_movie_collection/<int:id>')
+@login_required
+def delete_movie(id):
+    movie = Movies.query.get_or_404(id)
+    current_user.movies.remove(movie)
+    db.session.commit()
+    return redirect(url_for('.movie_collection', username=current_user.username))
+
+

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Flask Movies - {{user.username}}'s collection {% endblock %}
+
+
+{% block page_content %}
+
+<div class="row row-cols-1 row-cols-md-5 g-4">
+    {% for movie in movies %}
+
+    <div class="col">
+        <div class="card h-100">
+            <img src="{{ movie.poster }}" class="card-img-top ss">
+            <div class="card-body">
+                <a href="{{ url_for('main.movie', id=movie.id) }}" class="link">
+                    <h5 class="card-title">{{ movie.title}}, {{movie.year}}</h5>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+
+{% endblock %}

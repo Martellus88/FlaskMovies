@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Flask Movies - {{ movie.title.title() }} {% endblock %}
+
+{% block page_content %}
+
+<div class="clearfix">
+    <img src="{{ movie.poster }}" class="images col-md-6 float-md-end mb-3 ms-md-3" id="pp">
+
+    <h3>{{ movie.title }}, {{movie.year}}</h3>
+    <p><i><b>Runtime: {{movie.runtime}}</b></i></p>
+    <p>{{ movie.description }}</p>
+
+    <a href="{{ movie.url }}">Source link</a>
+
+    <div>
+        <a href="{{url_for('main.delete_movie', id=movie.id) }}" class="mt-5 btn btn-outline-danger btn-sm">Remove movie
+            from
+            collection</a>
+
+        <a href="{{url_for('main.delete_movie', id=movie.id) }}" class="mt-5 ms-5 btn btn-outline-secondary btn-sm">Add
+            movie
+            to
+            archive</a>
+    </div>
+</div>
+
+{% endblock %}

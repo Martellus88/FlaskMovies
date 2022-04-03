@@ -16,6 +16,10 @@
 {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
 
 <p>
-    Member since - {{ user.member_since.strftime("%d/%m/%y") }}
+    Member since - {{ user.member_since }}
+</p>
+
+<p>
+    <b><a class="link" href="{{ url_for('main.movie_collection', username=user.username) }}">Movie collection</a></b>
 </p>
 {% endblock %}

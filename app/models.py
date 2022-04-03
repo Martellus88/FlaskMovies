@@ -115,7 +115,7 @@ class Movies(db.Model):
     runtime = db.Column(db.Integer)
     poster = db.Column(db.String())
     type = db.Column(db.String(64))
-    url = db.Column(db.String(), index=True)  # unique = True ?
+    url = db.Column(db.String(), index=True)
 
 
 @login_manager.user_loader
