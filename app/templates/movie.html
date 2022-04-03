@@ -14,14 +14,10 @@
     <a href="{{ movie.url }}">Source link</a>
 
     <div>
-        <a href="{{url_for('main.delete_movie', id=movie.id) }}" class="mt-5 btn btn-outline-danger btn-sm">Remove movie
+        <a onclick="return confirmMsg(this);" href="{{url_for('main.delete_movie', id=movie.id) }}"
+           class="mt-5 btn btn-outline-danger btn-sm">Remove movie
             from
             collection</a>
-
-        <a href="{{url_for('main.delete_movie', id=movie.id) }}" class="mt-5 ms-5 btn btn-outline-secondary btn-sm">Add
-            movie
-            to
-            archive</a>
     </div>
 </div>
 

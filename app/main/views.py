@@ -1,4 +1,4 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_required
 from . import main
 from ..models import User, Movies
@@ -15,12 +15,10 @@ def index():
             flash('The movie has already been added to your collection.')
             return redirect(url_for('main.index'))
 
-        #! TODO
         movie = Movies.query.filter_by(url=form.url.data).first()
         if movie is not None:
             current_user.add_movie(movie)
         else:
-
             title, year, type_, description, runtime, poster = \
                 get_response(form.url.data)
             movie = Movies(title=title,
@@ -67,14 +65,19 @@ def edit_profile():
 @login_required
 def movie_collection(username):
     user = User.query.filter_by(username=username).first_or_404()
-    movies = user.movies.order_by(Movies.type.desc()).all()
-    return render_template('movie_collection.html', movies=movies, user=user)
+    page = request.args.get('page', 1, type=int)
+    pagination = user.movies.order_by(Movies.type.desc()).paginate(
+        page, per_page=10, error_out=False)
+    movies = pagination.items
+    return render_template('movie_collection.html', movies=movies, user=user, pagination=pagination)
+
 
 @main.route('/movie/<int:id>')
 @login_required
 def movie(id):
     movie = Movies.query.get_or_404(id)
     return render_template('movie.html', movie=movie)
+
 
 @main.route('/delete_movie_collection/<int:id>')
 @login_required
@@ -83,5 +86,3 @@ def delete_movie(id):
     current_user.movies.remove(movie)
     db.session.commit()
     return redirect(url_for('.movie_collection', username=current_user.username))
-
-
