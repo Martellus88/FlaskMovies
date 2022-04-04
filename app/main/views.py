@@ -7,7 +7,7 @@ from .. import db
 from ..utils import get_response
 
 
-def get_collection_video(username, type_video):
+def _get_collection_video(username, type_video):
     user = User.query.filter_by(username=username).first_or_404()
     page = request.args.get('page', 1, type=int)
     pagination = user.movies.filter_by(type=type_video).paginate(
@@ -20,23 +20,23 @@ def get_collection_video(username, type_video):
 def index():
     form = AddURLCinemaForm()
     if form.validate_on_submit():
-        if current_user.movie_already_added(form.url.data):
+        if current_user.movie_already_added(form.url.data.strip()):
             flash('The movie has already been added to your collection.')
             return redirect(url_for('main.index'))
 
-        movie = Movies.query.filter_by(url=form.url.data).first()
+        movie = Movies.query.filter_by(url=form.url.data.strip()).first()
         if movie is not None:
-            current_user.add_movie(movie)
+            current_user.add_movie(movie.strip())
         else:
             title, year, type_, description, runtime, poster = \
-                get_response(form.url.data)
+                get_response(form.url.data.strip())
             movie = Movies(title=title,
                            year=year,
                            type=type_,
                            description=description,
                            runtime=runtime,
                            poster=poster,
-                           url=form.url.data)
+                           url=form.url.data.strip())
             current_user.add_movie(movie)
 
         db.session.commit()
@@ -47,6 +47,7 @@ def index():
 
 
 @main.route('/profile/<username>')
+@login_required
 def profile_username(username):
     user = User.query.filter_by(username=username).first_or_404()
     return render_template('profile.html', user=user)
@@ -73,13 +74,13 @@ def edit_profile():
 @main.route('/movie_collection/<username>')
 @login_required
 def movie_collection(username):
-    return get_collection_video(username, 'movie')
+    return _get_collection_video(username, 'movie')
 
 
 @main.route('/series_collection/<username>')
 @login_required
 def series_collection(username):
-    return get_collection_video(username, 'series')
+    return _get_collection_video(username, 'series')
 
 
 @main.route('/movie/<int:id>')

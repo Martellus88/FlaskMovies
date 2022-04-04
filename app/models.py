@@ -1,4 +1,5 @@
 import datetime
+import hashlib
 import jwt
 from flask import current_app
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -22,11 +23,17 @@ class User(UserMixin, db.Model):
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.datetime.utcnow())
+    avatar_hash = db.Column(db.String(32))
 
     movies = db.relationship('Movies',
                              secondary=user_movies,
                              backref='users',
                              lazy='dynamic')
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if self.email is not None and self.avatar_hash is None:
+            self.avatar_hash = self.gravatar_hash()
 
     def __repr__(self):
         return f'<User> {self.id=}:{self.username=}:{self.email=}'
@@ -76,6 +83,7 @@ class User(UserMixin, db.Model):
         if new_email is None:
             return False
         self.email = new_email
+        self.avatar_hash = self.gravatar_hash()
         db.session.add(self)
         return True
 
@@ -104,6 +112,14 @@ class User(UserMixin, db.Model):
 
     def add_movie(self, movie):
         self.movies.append(movie)
+
+    def gravatar_hash(self):
+        return hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
+
+    def gravatar(self, size=100, default='monsterid', rating='g'):
+        url = 'https://secure.gravatar.com/avatar'
+        hash = self.avatar_hash or self.gravatar_hash()
+        return f'{url}/{hash}?s={size}&d={default}&r={rating}'
 
 
 class Movies(db.Model):

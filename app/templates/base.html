@@ -50,10 +50,10 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="offcanvasCollection">
                                 <li><a class="dropdown-item"
-                                       href="{{ url_for('.movie_collection', username=current_user.username) }}">Movie</a>
+                                       href="{{ url_for('main.movie_collection', username=current_user.username) }}">Movie</a>
                                 </li>
                                 <li><a class="dropdown-item"
-                                       href="{{ url_for('.series_collection',username=current_user.username) }}">Series</a>
+                                       href="{{ url_for('main.series_collection',username=current_user.username) }}">Series</a>
                                 </li>
                             </ul>
                         </li>

@@ -13,7 +13,7 @@ class EditProfileForm(FlaskForm):
 class AddURLCinemaForm(FlaskForm):
     url = StringField('Link to imdb or kinopoisk', validators=[
         DataRequired(),
-        Regexp("^(https?:\/\/)?(www.imdb.com|www.kinopoisk.ru)[^\s@]*")],
+        Regexp("^([\s]{0,}https?:\/\/)?(www.imdb.com|www.kinopoisk.ru)[^\s@]*[\s]{0,}")],
                       render_kw={
                           "placeholder": "example: https://www.imdb.com/title/tt0133093/ or https://www.kinopoisk.ru/film/301/"})
     submit = SubmitField('Add cinema')

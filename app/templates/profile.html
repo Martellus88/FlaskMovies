@@ -3,26 +3,39 @@
 {% block title %}Flask Movies - {{ user.username }}{% endblock %}
 
 {% block page_content %}
-<h1>{{ user.username }}</h1>
-{% if user.name or user.location %}
-<p class="pt-2">
-    {% if user.name %}{{user.name}}{% endif %}
-    {% if user.location %}
-    from <a href="http://maps.google.com/?q={{ user.location }}">{{ user.location }}</a><br>
-    {% endif %}
-</p>
-{% endif %}
+<div class="container">
+    <div class="row">
+        <div class=" col-3">
+            <img class="rounded float-start" src="{{ user.gravatar(size=256) }}">
+        </div>
+        <div class="col-6">
+            <h1>{{ user.username }}</h1>
+            {% if user.name or user.location %}
+            <p class="pt-2">
+                {% if user.name %}{{user.name}}{% endif %}
+                {% if user.location %}
+                from <a href="http://maps.google.com/?q={{ user.location }}">{{ user.location }}</a><br>
+                {% endif %}
+            </p>
+            {% endif %}
 
-{% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
+            {% if user.about_me %}<p style="word-wrap: break-word;">{{ user.about_me }}</p>{% endif %}
 
-<p>
-    Member since - {{ user.member_since }}
-</p>
+            <p>
+                Member since - {{ user.member_since }}
+            </p>
 
-<p>
-    <b><a class="link" href="{{ url_for('.movie_collection', username=user.username) }}">Movie collection</a></b>
-</p>
-<p>
-    <b><a class="link" href="{{ url_for('.series_collection', username=user.username) }}">Series collection</a></b>
-</p>
+        </div>
+    </div>
+    <div class="pt-5">
+        <p>
+            <b><a class="" href="{{ url_for('.movie_collection', username=user.username) }}">Movie
+                collection</a></b>
+        </p>
+        <p>
+            <b><a class="" href="{{ url_for('.series_collection', username=user.username) }}">Series
+                collection</a></b>
+        </p>
+    </div>
+</div>
 {% endblock %}
