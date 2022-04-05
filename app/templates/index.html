@@ -12,6 +12,11 @@
     <div class="form-control-lg w-75 center-container">
         {{ render_form(form) }}
     </div>
+    {% else %}
+    <h1 class="text-center p-4">Welcome to Flask Movies.
+        <a href="{{ url_for('auth.register') }}">Registration</a>
+        is required to use this service.</h1>
+    <img src="{{ url_for('static', filename='1.jpg') }}" class="img-center">
     {% endif %}
 </div>
 {% endblock %}
