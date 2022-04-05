@@ -22,7 +22,7 @@
             {% if user.about_me %}<p style="word-wrap: break-word;">{{ user.about_me }}</p>{% endif %}
 
             <p>
-                Member since - {{ user.member_since }}
+                Member since - {{ user.member_since.strftime('%d/%m/%Y') }}
             </p>
 
         </div>

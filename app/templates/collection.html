@@ -13,7 +13,7 @@
         <div class="card h-100">
             <img src="{{ movie.poster }}" class="card-img-top ss">
             <div class="card-body">
-                <a href="{{ url_for('main.movie', id=movie.id) }}" class="link">
+                <a href="{{ url_for('main.movie', id=movie.id) }}">
                     <h5 class="card-title">{{ movie.title}}, {{movie.year}}</h5>
                 </a>
             </div>

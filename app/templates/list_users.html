@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Flask Movies - Users list {% endblock %}
+
+{% block page_content %}
+
+<div class="row row-cols-1 row-cols-md-5 g-4">
+    {% for user in users %}
+    <div class="col">
+        <div class="card">
+            <img src="{{ user.gravatar(size=256) }}" class="card-img-top ss">
+            <div class="card-body">
+                <a href="{{ url_for('main.profile_username', username=user.username) }}">
+                    <h5 class="card-title">{{ user.username}}</h5>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

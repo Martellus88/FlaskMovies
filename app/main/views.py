@@ -97,3 +97,8 @@ def delete_movie(id):
     current_user.movies.remove(movie)
     db.session.commit()
     return redirect(url_for('.movie_collection', username=current_user.username))
+
+@main.route('/list_users')
+def list_users():
+    users = User.query.all()
+    return render_template('list_users.html', users=users)
