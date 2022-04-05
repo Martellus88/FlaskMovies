@@ -23,9 +23,9 @@
         </th>
         <th>{{ user.id }}</th>
         <td>{{ user.email }}</td>
-        <td>{{ user.name }}</td>
-        <td>{{ user.location }}</td>
-        <td>{{ user.about_me }}</td>
+        <td>{% if user.name %}{{ user.name }}{% endif %}</td>
+        <td>{% if user.location %}{{ user.location }}{% endif %}</td>
+        <td><p style="width: 300px ;word-wrap: break-word;">{% if user.about_me %}{{user.about_me }}{% endif %}</p></td>
     </tr>
     {% endfor %}
     </tbody>

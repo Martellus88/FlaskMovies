@@ -26,7 +26,7 @@ def index():
 
         movie = Movies.query.filter_by(url=form.url.data.strip()).first()
         if movie is not None:
-            current_user.add_movie(movie.strip())
+            current_user.add_movie(movie)
         else:
             title, year, type_, description, runtime, poster = \
                 get_response(form.url.data.strip())

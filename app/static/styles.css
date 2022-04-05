@@ -1,4 +1,4 @@
-body { padding: 0 calc(20px - (100vw - 100%)) 0 0; }
+body { padding: 0 calc(20px - (100vw - 100%)) 0 0};
 
 body a {
    text-decoration: none;
@@ -7,6 +7,7 @@ body a {
 .ss {
 height: 350px;
 }
+
 
 div .images {
 width: 39%;

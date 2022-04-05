@@ -9,7 +9,7 @@ from ..utils import admin_required
 @admin.route('/')
 @admin_required
 def admin_page():
-    users = User.query.order_by().all()
+    users = User.query.all()
     return render_template('admin_panel/admin.html', users=users)
 
 
