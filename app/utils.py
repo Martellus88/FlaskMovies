@@ -39,11 +39,7 @@ def imdb_api(cinema_id):
     }
 
     response = requests.request("GET", url, headers=headers, params=querystring)
-
-    try:
-        response.raise_for_status()
-    except requests.HTTPError as e:
-        print(e)
+    response.raise_for_status()
 
     json_response = json.loads(response.text)
 
@@ -66,11 +62,7 @@ def kinopoisk_api(cinema_id):
     }
 
     response = requests.request("GET", url, headers=headers)
-
-    try:
-        response.raise_for_status()
-    except requests.HTTPError as e:
-        print(e)
+    response.raise_for_status()
 
     json_response = json.loads(response.text)
 

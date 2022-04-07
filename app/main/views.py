@@ -1,3 +1,4 @@
+from flask_sqlalchemy import get_debug_queries
 from flask import render_template, flash, redirect, url_for, request, current_app
 from flask_login import current_user, login_required
 from . import main
@@ -5,6 +6,16 @@ from ..models import User, Movies
 from .forms import EditProfileForm, AddURLCinemaForm
 from .. import db
 from ..utils import get_response
+
+
+@main.after_app_request
+def after_request(response):
+    for query in get_debug_queries():
+        if query.duration >= current_app.config['SLOW_DB_QUERY_TIME']:
+            current_app.logger.warning(
+                f'Slow query: {query.statement}\nParameters: {query.parameters}\n'
+                f'Duration: {query.duration}\nContext: {query.context}\n')
+    return response
 
 
 def _get_collection_video(username, type_video):
@@ -97,6 +108,7 @@ def delete_movie(id):
     current_user.movies.remove(movie)
     db.session.commit()
     return redirect(url_for('.movie_collection', username=current_user.username))
+
 
 @main.route('/list_users')
 def list_users():
