@@ -6,6 +6,8 @@
 1) [kinopoiskapiunofficial](https://kinopoiskapiunofficial.tech)
 2) [rapidapi mdblist](https://rapidapi.com/linaspurinis/api/mdblist/)
 
+Accordingly, you need to get the keys and add them to utils.py
+
 ## Application launch order
 ***
 
