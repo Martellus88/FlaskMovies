@@ -1,6 +1,6 @@
 **Flask Movies is an application for storing movies and series on imdb and kinopoisk in one place.**
 
-***Project website*** - flaskmovies.herokuapp.com
+[***Project website***](https://flaskmovies.herokuapp.com)
 
 **This project uses two API:**
 1) [kinopoiskapiunofficial](https://kinopoiskapiunofficial.tech)

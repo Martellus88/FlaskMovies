@@ -35,7 +35,7 @@ def imdb_api(cinema_id):
 
     headers = {
         "X-RapidAPI-Host": "mdblist.p.rapidapi.com",
-        "X-RapidAPI-Key": "45dd416a91mshccbc6a4542d7713p129dc4jsn3793d620983f"
+        "X-RapidAPI-Key": '<KEY>'
     }
 
     response = requests.request("GET", url, headers=headers, params=querystring)
@@ -57,7 +57,7 @@ def kinopoisk_api(cinema_id):
     url = f"https://kinopoiskapiunofficial.tech/api/v2.2/films/{cinema_id}"
 
     headers = {
-        "X-API-KEY": "9b021ac4-0f7b-4c61-9f20-bc63a5415416",
+        "X-API-KEY": '<KEY>',
         'Content-Type': 'application/json'
     }
 
