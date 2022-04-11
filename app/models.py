@@ -125,7 +125,7 @@ class User(UserMixin, db.Model):
 class Movies(db.Model):
     __tablename__ = 'movies'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(64))
+    title = db.Column(db.String(128))
     year = db.Column(db.Integer)
     description = db.Column(db.Text())
     runtime = db.Column(db.Integer)
