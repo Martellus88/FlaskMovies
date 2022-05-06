@@ -11,36 +11,20 @@ Accordingly, you need to get the keys and add them to utils.py
 ## Application launch order
 ***
 
-### Virtual Environment
-
-    python -m venv venv
-
 Windows
-
+    python -m venv venv
     venv\Scripts\activate
-
-Linux
-
-    source venv/bin/activate
-
-
-Installing dependencies
-
     pip install -r requirements.txt
-
-Application launch:
-    
-Widows
-
     set FLASK_APP=run.py
+    flask run
 
 Linux
-
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
     export FLASK_APP=run.py
-
-***
-
     flask run
+  
 
 ***
 
