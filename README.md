@@ -9,15 +9,16 @@
 Accordingly, you need to get the keys and add them to utils.py
 
 ## Application launch order
+Windows
 ***
-    Windows
     python -m venv venv
     venv\Scripts\activate
     pip install -r requirements.txt
     set FLASK_APP=run.py
     flask run
+    
+Linux
 ***
-    Linux
     python3 -m venv venv
     source venv/bin/activate
     pip install -r requirements.txt
