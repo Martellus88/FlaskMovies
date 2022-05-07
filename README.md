@@ -15,6 +15,7 @@ Windows
     venv\Scripts\activate
     pip install -r requirements.txt
     set FLASK_APP=run.py
+    flask db upgrade
     flask run
     
 Linux
@@ -23,6 +24,7 @@ Linux
     source venv/bin/activate
     pip install -r requirements.txt
     export FLASK_APP=run.py
+    flask db upgrade
     flask run
   
 ***
